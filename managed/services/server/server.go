@@ -753,6 +753,9 @@ func (s *Server) getInternalPgQANAgent(q *reform.Querier) (*models.Agent, error)
 	if err != nil {
 		return nil, fmt.Errorf("failed to find agents: %w", err)
 	}
+	if len(agents) == 0 {
+		return nil, fmt.Errorf("no internal PgQAN agent found")
+	}
 	return agents[0], nil
 }
 
