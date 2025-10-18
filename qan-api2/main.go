@@ -273,10 +273,10 @@ func main() {
 
 	kingpin.Parse()
 
-	log.Printf("%s.", version.ShortInfo())
-	log.Printf("Clickhouse address: %s", *clickhouseAddrF)
-
 	logger.SetupGlobalLogger()
+
+	logrus.Printf("%s.", version.ShortInfo())
+	logrus.Printf("Clickhouse address: %s", *clickhouseAddrF)
 
 	if *debugF {
 		logrus.SetLevel(logrus.DebugLevel)
@@ -307,7 +307,7 @@ func main() {
 		l.Info("DSN: ", u.Redacted())
 	}
 
-	db := NewDB(dsn, maxIdleConns, maxOpenConns, *clickhouseIsClusterF, *clickhouseClusterNameF)
+	db := NewDB(dsn, maxIdleConns, maxOpenConns, *clickhouseIsClusterF, *clickhouseClusterNameF, logrus.WithField("component", "db"))
 	prom.MustRegister(sqlmetrics.NewCollector("clickhouse", "qan-api2", db.DB))
 
 	// handle termination signals
@@ -316,7 +316,7 @@ func main() {
 	go func() {
 		s := <-signals
 		signal.Stop(signals)
-		log.Printf("Got %s, shutting down...\n", unix.SignalName(s.(unix.Signal))) //nolint:forcetypeassert
+		l.Infof("Got %s, shutting down...\n", unix.SignalName(s.(unix.Signal))) //nolint:forcetypeassert
 		cancel()
 	}()
 
@@ -360,7 +360,7 @@ func main() {
 		defer wg.Done()
 		for {
 			// Drop old partitions once in 24h.
-			DropOldPartition(db, *clickhouseDatabaseF, *dataRetentionF)
+			DropOldPartition(db, *clickhouseDatabaseF, *dataRetentionF, l)
 			select {
 			case <-ctx.Done():
 				return
