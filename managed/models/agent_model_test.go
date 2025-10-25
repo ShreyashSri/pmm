@@ -33,6 +33,7 @@ import (
 
 func TestAgent(t *testing.T) {
 	t.Run("UnifiedLabels", func(t *testing.T) {
+		t.Parallel()
 		agent := &models.Agent{
 			AgentID:      "agent_id",
 			CustomLabels: []byte(`{"foo": "bar"}`),
@@ -47,6 +48,7 @@ func TestAgent(t *testing.T) {
 	})
 
 	t.Run("DSN", func(t *testing.T) {
+		t.Parallel()
 		agent := &models.Agent{
 			Username:          pointer.ToString("username"),
 			Password:          pointer.ToString("s3cur3 p@$$w0r4."),
@@ -69,6 +71,8 @@ func TestAgent(t *testing.T) {
 			models.QANMongoDBProfilerAgentType: "mongodb://username:s3cur3%20p%40$$w0r4.@1.2.3.4:12345/database?connectTimeoutMS=1000&directConnection=true&serverSelectionTimeoutMS=1000",
 			models.PostgresExporterType:        "postgres://username:s3cur3%20p%40$$w0r4.@1.2.3.4:12345/database?connect_timeout=1&sslmode=disable",
 		} {
+			typ := typ
+			expected := expected
 			t.Run(string(typ), func(t *testing.T) {
 				agent.AgentType = typ
 				assert.Equal(t, expected, agent.DSN(service, models.DSNParams{DialTimeout: time.Second, Database: "database"}, nil, nil))
@@ -84,6 +88,7 @@ func TestAgent(t *testing.T) {
 	})
 
 	t.Run("DSN socket", func(t *testing.T) {
+		t.Parallel()
 		agent := &models.Agent{
 			Username:        pointer.ToString("username"),
 			Password:        pointer.ToString("s3cur3 p@$$w0r4."),
@@ -100,6 +105,8 @@ func TestAgent(t *testing.T) {
 			models.QANMySQLPerfSchemaAgentType: "username:s3cur3 p@$$w0r4.@unix(/var/run/mysqld/mysqld.sock)/database?clientFoundRows=true&parseTime=true&timeout=1s",
 			models.QANMySQLSlowlogAgentType:    "username:s3cur3 p@$$w0r4.@unix(/var/run/mysqld/mysqld.sock)/database?clientFoundRows=true&parseTime=true&timeout=1s",
 		} {
+			typ := typ
+			expected := expected
 			t.Run(string(typ), func(t *testing.T) {
 				agent.AgentType = typ
 				assert.Equal(t, expected, agent.DSN(service, models.DSNParams{DialTimeout: time.Second, Database: "database"}, nil, nil))
@@ -108,6 +115,7 @@ func TestAgent(t *testing.T) {
 	})
 
 	t.Run("DSN timeout", func(t *testing.T) {
+		t.Parallel()
 		agent := &models.Agent{
 			Username:        pointer.ToString("username"),
 			Password:        pointer.ToString("s3cur3 p@$$w0r4."),
@@ -122,6 +130,8 @@ func TestAgent(t *testing.T) {
 			models.MongoDBExporterType:         "mongodb://username:s3cur3%20p%40$$w0r4.@%2Fvar%2Frun%2Fmysqld%2Fmysqld.sock/database?connectTimeoutMS=1000&directConnection=true&serverSelectionTimeoutMS=1000",
 			models.QANMongoDBProfilerAgentType: "mongodb://username:s3cur3%20p%40$$w0r4.@%2Fvar%2Frun%2Fmysqld%2Fmysqld.sock/database?connectTimeoutMS=1000&directConnection=true&serverSelectionTimeoutMS=1000",
 		} {
+			typ := typ
+			expected := expected
 			t.Run(string(typ), func(t *testing.T) {
 				agent.AgentType = typ
 				assert.Equal(t, expected, agent.DSN(service, models.DSNParams{DialTimeout: time.Second, Database: "database"}, nil, nil))
@@ -130,6 +140,7 @@ func TestAgent(t *testing.T) {
 	})
 
 	t.Run("DSN ssl", func(t *testing.T) {
+		t.Parallel()
 		mongoDBOptions := models.MongoDBOptions{
 			TLSCertificateKey:             "key",
 			TLSCertificateKeyFilePassword: "pass",
@@ -169,6 +180,8 @@ func TestAgent(t *testing.T) {
 			models.QANMongoDBProfilerAgentType: "mongodb://username:s3cur3%20p%40$$w0r4.@1.2.3.4:12345/database?authMechanism=MONGODB-X509&connectTimeoutMS=1000&directConnection=true&serverSelectionTimeoutMS=1000&ssl=true&tlsCaFile={{.TextFiles.caFilePlaceholder}}&tlsCertificateKeyFile={{.TextFiles.certificateKeyFilePlaceholder}}&tlsCertificateKeyFilePassword=pass",
 			models.PostgresExporterType:        "postgres://username:s3cur3%20p%40$$w0r4.@1.2.3.4:12345/database?connect_timeout=1&sslcert={{.TextFiles.certificateFilePlaceholder}}&sslkey={{.TextFiles.certificateKeyFilePlaceholder}}&sslmode=verify-ca&sslrootcert={{.TextFiles.caFilePlaceholder}}",
 		} {
+			typ := typ
+			expected := expected
 			t.Run(string(typ), func(t *testing.T) {
 				agent.AgentType = typ
 				assert.Equal(t, expected, agent.DSN(service, models.DSNParams{DialTimeout: time.Second, Database: "database"}, nil, nil))
@@ -208,6 +221,7 @@ func TestAgent(t *testing.T) {
 	})
 
 	t.Run("DSN ssl-skip-verify", func(t *testing.T) {
+		t.Parallel()
 		agent := &models.Agent{
 			Username:          pointer.ToString("username"),
 			Password:          pointer.ToString("s3cur3 p@$$w0r4."),
@@ -232,6 +246,8 @@ func TestAgent(t *testing.T) {
 			models.QANMongoDBProfilerAgentType: "mongodb://username:s3cur3%20p%40$$w0r4.@1.2.3.4:12345/database?connectTimeoutMS=1000&directConnection=true&serverSelectionTimeoutMS=1000&ssl=true&tlsInsecure=true",
 			models.PostgresExporterType:        "postgres://username:s3cur3%20p%40$$w0r4.@1.2.3.4:12345/database?connect_timeout=1&sslmode=require",
 		} {
+			typ := typ
+			expected := expected
 			t.Run(string(typ), func(t *testing.T) {
 				agent.AgentType = typ
 				assert.Equal(t, expected, agent.DSN(service, models.DSNParams{DialTimeout: time.Second, Database: "database"}, nil, nil))
@@ -270,6 +286,7 @@ func TestPostgresAgentTLS(t *testing.T) {
 		{true, false, "postgres://username:s3cur3%20p%40$$w0r4.@1.2.3.4:12345/database?connect_timeout=1&sslmode=verify-ca"},
 		{true, true, "postgres://username:s3cur3%20p%40$$w0r4.@1.2.3.4:12345/database?connect_timeout=1&sslmode=require"},
 	} {
+		testCase := testCase
 		name := fmt.Sprintf("TLS:%v/TLSSkipVerify:%v", testCase.tls, testCase.tlsSkipVerify)
 		t.Run(name, func(t *testing.T) {
 			agent.TLS = testCase.tls
@@ -287,6 +304,7 @@ func TestPostgresAgentTLS(t *testing.T) {
 
 func TestValkey(t *testing.T) {
 	t.Run("Redis DSN", func(t *testing.T) {
+		t.Parallel()
 		agent := &models.Agent{
 			Username:        pointer.ToString("username"),
 			Password:        pointer.ToString("s3cur3 p@$$w0r4."),
@@ -305,6 +323,7 @@ func TestValkey(t *testing.T) {
 	})
 
 	t.Run("Valkey DSN with TLS", func(t *testing.T) {
+		t.Parallel()
 		agent := &models.Agent{
 			Username:        pointer.ToString("username"),
 			Password:        pointer.ToString("s3cur3 p@$$w0r4."),
@@ -330,6 +349,7 @@ func TestValkey(t *testing.T) {
 
 func TestPostgresWithSocket(t *testing.T) {
 	t.Run("empty-password", func(t *testing.T) {
+		t.Parallel()
 		agent := &models.Agent{
 			Username:          pointer.ToString("username"),
 			AgentType:         models.PostgresExporterType,
@@ -346,6 +366,7 @@ func TestPostgresWithSocket(t *testing.T) {
 	})
 
 	t.Run("empty-user-password", func(t *testing.T) {
+		t.Parallel()
 		agent := &models.Agent{
 			AgentType:         models.PostgresExporterType,
 			ExporterOptions:   models.ExporterOptions{},
@@ -359,6 +380,7 @@ func TestPostgresWithSocket(t *testing.T) {
 	})
 
 	t.Run("dir-with-symbols", func(t *testing.T) {
+		t.Parallel()
 		agent := &models.Agent{
 			AgentType:         models.PostgresExporterType,
 			ExporterOptions:   models.ExporterOptions{},
@@ -374,6 +396,7 @@ func TestPostgresWithSocket(t *testing.T) {
 
 func TestMongoWithSocket(t *testing.T) {
 	t.Run("empty-password", func(t *testing.T) {
+		t.Parallel()
 		agent := &models.Agent{
 			Username:        pointer.ToString("username"),
 			AgentType:       models.MongoDBExporterType,
@@ -390,6 +413,7 @@ func TestMongoWithSocket(t *testing.T) {
 	})
 
 	t.Run("empty-user-password", func(t *testing.T) {
+		t.Parallel()
 		agent := &models.Agent{
 			AgentType:       models.MongoDBExporterType,
 			ExporterOptions: models.ExporterOptions{},
@@ -403,6 +427,7 @@ func TestMongoWithSocket(t *testing.T) {
 	})
 
 	t.Run("dir-with-symbols", func(t *testing.T) {
+		t.Parallel()
 		agent := &models.Agent{
 			AgentType:       models.MongoDBExporterType,
 			ExporterOptions: models.ExporterOptions{},
@@ -432,11 +457,13 @@ func TestIsMySQLTablestatsGroupEnabled(t *testing.T) {
 		{pointer.ToInt32(1000), 500, false},
 		{pointer.ToInt32(1000), 2000, true},
 	} {
+		testCase := testCase
 		c := "nil"
 		if testCase.count != nil {
 			c = strconv.Itoa(int(*testCase.count))
 		}
 		t.Run(fmt.Sprintf("Count:%s/Limit:%d", c, testCase.limit), func(t *testing.T) {
+			t.Parallel()
 			agent := &models.Agent{
 				AgentType: models.MySQLdExporterType,
 				MySQLOptions: models.MySQLOptions{
@@ -612,6 +639,8 @@ func TestExporterURL(t *testing.T) {
 			"ExporterServerlessWithQueryParams":      "http://user:secret@nomad_exporter:9121/metrics?format=prometheus&output=json",
 			"ExporterServerlessWithEmptyMetricsPath": "http://user:secret@nomad_exporter:9121/",
 		} {
+			agentID := agentID
+			expected := expected
 			t.Run(agentID, func(t *testing.T) {
 				agent, err := models.FindAgentByID(q, agentID)
 				assert.NoError(t, err)

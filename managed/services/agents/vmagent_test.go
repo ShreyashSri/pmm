@@ -27,6 +27,7 @@ import (
 
 func TestMaxScrapeSize(t *testing.T) {
 	t.Run("by default 64MiB", func(t *testing.T) {
+		t.Parallel()
 		params, err := models.NewVictoriaMetricsParams(models.BasePrometheusConfigPath, models.VMBaseURL)
 		require.NoError(t, err)
 		actual := vmAgentConfig("", params)
@@ -60,6 +61,7 @@ func TestMaxScrapeSize(t *testing.T) {
 		assert.NotContains(t, actual.Env, "VMAGENT_remoteWrite_basicAuth_username={{.server_username}}")
 	})
 	t.Run("External Victoria Metrics with credentials in URL", func(t *testing.T) {
+		t.Parallel()
 		params, err := models.NewVictoriaMetricsParams(models.BasePrometheusConfigPath, "http://user:pass@victoriametrics:8428")
 		require.NoError(t, err)
 		actual := vmAgentConfig("", params)
@@ -71,6 +73,7 @@ func TestMaxScrapeSize(t *testing.T) {
 		assert.NotContains(t, actual.Env, "VMAGENT_remoteWrite_basicAuth_password={{.server_password}}")
 	})
 	t.Run("External Victoria Metrics with username only in URL", func(t *testing.T) {
+		t.Parallel()
 		params, err := models.NewVictoriaMetricsParams(models.BasePrometheusConfigPath, "http://user@victoriametrics:8428")
 		require.NoError(t, err)
 		actual := vmAgentConfig("", params)
@@ -82,6 +85,7 @@ func TestMaxScrapeSize(t *testing.T) {
 		assert.NotContains(t, actual.Env, "VMAGENT_remoteWrite_basicAuth_password={{.server_password}}")
 	})
 	t.Run("External Victoria Metrics with special characters in credentials", func(t *testing.T) {
+		t.Parallel()
 		params, err := models.NewVictoriaMetricsParams(models.BasePrometheusConfigPath, "http://user%40domain:p%40ss%21@victoriametrics:8428")
 		require.NoError(t, err)
 		actual := vmAgentConfig("", params)
@@ -109,6 +113,7 @@ func TestMaxScrapeSize(t *testing.T) {
 		assert.NotContains(t, actual.Env, "VMAGENT_remoteWrite_maxDiskUsagePerURL=1073741824")
 	})
 	t.Run("httpListenAddr is in Args not Env", func(t *testing.T) {
+		t.Parallel()
 		params, err := models.NewVictoriaMetricsParams(models.BasePrometheusConfigPath, models.VMBaseURL)
 		require.NoError(t, err)
 		actual := vmAgentConfig("", params)
@@ -131,6 +136,7 @@ func TestMaxScrapeSize(t *testing.T) {
 }
 
 func TestVMAgentExternalVM(t *testing.T) {
+	t.Parallel()
 	testCases := []struct {
 		name                  string
 		vmURL                 string
@@ -207,7 +213,9 @@ func TestVMAgentExternalVM(t *testing.T) {
 }
 
 func TestVMAgentInternalVM(t *testing.T) {
+	t.Parallel()
 	t.Run("Internal VM uses server credentials", func(t *testing.T) {
+		t.Parallel()
 		params, err := models.NewVictoriaMetricsParams(models.BasePrometheusConfigPath, models.VMBaseURL)
 		require.NoError(t, err)
 
@@ -227,6 +235,7 @@ func TestVMAgentInternalVM(t *testing.T) {
 }
 
 func TestExtractCredentialsFromURL(t *testing.T) {
+	t.Parallel()
 	testCases := []struct {
 		name             string
 		url              string

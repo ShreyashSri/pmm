@@ -247,6 +247,7 @@ func TestArtifacts(t *testing.T) {
 	})
 
 	t.Run("MetadataRemoveFirstN", func(t *testing.T) {
+		t.Parallel()
 		tx, err := db.Begin()
 		require.NoError(t, err)
 		t.Cleanup(func() {
