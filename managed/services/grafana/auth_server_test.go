@@ -42,6 +42,8 @@ import (
 )
 
 func TestNextPrefix(t *testing.T) {
+	t.Parallel()
+
 	for _, paths := range [][]string{
 		{"/inventory.Nodes/ListNodes", "/inventory.Nodes/", "/inventory.Nodes", "/inventory.", "/inventory", "/", "/"},
 		{"/v1/inventory/Nodes/List", "/v1/inventory/Nodes/", "/v1/inventory/Nodes", "/v1/inventory/", "/v1/inventory", "/v1/", "/v1", "/", "/"},

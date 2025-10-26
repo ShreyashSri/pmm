@@ -33,6 +33,8 @@ import (
 )
 
 func TestNewInventoryMetricsCollector(t *testing.T) {
+	t.Parallel()
+
 	t.Run("Metrics returns inventory metrics", func(t *testing.T) {
 		client := http.Client{}
 

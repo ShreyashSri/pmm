@@ -151,6 +151,7 @@ func TestTransformToJSON(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			got, err := transformToJSON(tt.args.config, tt.args.metrics)
 			if !tt.wantErr(t, err) {
 				t.Logf("config: %v", tt.args.config)
@@ -242,6 +243,7 @@ func TestTransformExportValues(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			got, err := transformExportValues(tt.args.config, tt.args.metrics)
 			if !tt.wantErr(t, err) {
 				t.Logf("config: %v", tt.args.config)
@@ -362,6 +364,7 @@ func TestRemoveEmpty(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			assert.Equalf(t, tt.want, removeEmpty(tt.args.metrics), "removeEmpty(%v)", tt.args.metrics)
 		})
 	}

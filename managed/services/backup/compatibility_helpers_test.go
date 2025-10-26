@@ -163,6 +163,8 @@ func TestMysqlAndXtrabackupCompatible(t *testing.T) {
 }
 
 func TestVendorToServiceType(t *testing.T) {
+	t.Parallel()
+
 	for _, test := range []struct {
 		name      string
 		input     string
@@ -202,6 +204,8 @@ func TestVendorToServiceType(t *testing.T) {
 }
 
 func TestSoftwareVersionsToMap(t *testing.T) {
+	t.Parallel()
+
 	input := models.SoftwareVersions{
 		{Name: "mysqld", Version: "8.0.25"},
 		{Name: "xtrabackup", Version: "8.0.25"},
@@ -223,6 +227,8 @@ func TestSoftwareVersionsToMap(t *testing.T) {
 }
 
 func TestMySQLSoftwaresInstalledAndCompatible(t *testing.T) {
+	t.Parallel()
+
 	for _, test := range []struct {
 		name  string
 		input map[models.SoftwareName]string
@@ -299,6 +305,8 @@ func TestMySQLSoftwaresInstalledAndCompatible(t *testing.T) {
 }
 
 func TestMongoDBBackupSoftwareInstalledAndCompatible(t *testing.T) {
+	t.Parallel()
+
 	for _, test := range []struct {
 		name  string
 		input map[models.SoftwareName]string

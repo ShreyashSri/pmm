@@ -37,6 +37,8 @@ import (
 )
 
 func TestStartAdvisorChecks(t *testing.T) {
+	t.Parallel()
+
 	t.Run("internal error", func(t *testing.T) {
 		var checksService mockChecksService
 		checksService.On("StartChecks", []string(nil)).Return(errors.New("random error"))
@@ -300,6 +302,8 @@ func TestListFailedServices(t *testing.T) {
 }
 
 func TestListAdvisorChecks(t *testing.T) {
+	t.Parallel()
+
 	t.Run("normal", func(t *testing.T) {
 		var checksService mockChecksService
 		checksService.On("GetDisabledChecks", mock.Anything).Return([]string{"two"}, nil)
@@ -340,6 +344,8 @@ func TestListAdvisorChecks(t *testing.T) {
 }
 
 func TestUpdateAdvisorChecks(t *testing.T) {
+	t.Parallel()
+
 	t.Run("enable advisor checks error", func(t *testing.T) {
 		var checksService mockChecksService
 		checksService.On("EnableChecks", mock.Anything).Return(errors.New("random error"))

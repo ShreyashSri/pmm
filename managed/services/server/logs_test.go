@@ -65,6 +65,7 @@ var commonExpectedFiles = []string{
 }
 
 func TestReadLog(t *testing.T) {
+	t.Parallel()
 	f, err := os.CreateTemp("", "pmm-managed-supervisord-tests-")
 	require.NoError(t, err)
 	fNoNewLineEnding, err := os.CreateTemp("", "pmm-managed-supervisord-tests-")
@@ -101,6 +102,7 @@ func TestReadLog(t *testing.T) {
 }
 
 func TestReadLogUnlimited(t *testing.T) {
+	t.Parallel()
 	f, err := os.CreateTemp("", "pmm-managed-supervisord-tests-")
 	require.NoError(t, err)
 	fNoNewLineEnding, err := os.CreateTemp("", "pmm-managed-supervisord-tests-")
@@ -137,6 +139,7 @@ func TestReadLogUnlimited(t *testing.T) {
 }
 
 func TestAddAdminSummary(t *testing.T) {
+	t.Parallel()
 	t.Skip("FIXME")
 
 	zipfile, err := os.CreateTemp("", "*-test.zip")
@@ -162,6 +165,7 @@ func TestAddAdminSummary(t *testing.T) {
 }
 
 func TestFiles(t *testing.T) {
+	t.Parallel()
 	updater := &Updater{}
 	params, err := models.NewVictoriaMetricsParams(models.BasePrometheusConfigPath, models.VMBaseURL)
 	require.NoError(t, err)
@@ -193,6 +197,7 @@ func TestFiles(t *testing.T) {
 }
 
 func TestZip(t *testing.T) {
+	t.Parallel()
 	t.Skip("FIXME")
 
 	updater := &Updater{}

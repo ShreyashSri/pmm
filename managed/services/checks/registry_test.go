@@ -27,6 +27,8 @@ import (
 )
 
 func TestRegistry(t *testing.T) {
+	t.Parallel()
+
 	t.Run("create and collect Alerts", func(t *testing.T) {
 		r := newRegistry()
 		checkResults := []services.CheckResult{

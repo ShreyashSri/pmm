@@ -34,6 +34,8 @@ import (
 )
 
 func TestPitrMetaFromFileName(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name     string
 		filename string
@@ -146,6 +148,8 @@ func TestGetPITROplogs(t *testing.T) {
 }
 
 func TestPitrParseTs(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name     string
 		filename string
@@ -177,6 +181,8 @@ func TestPitrParseTs(t *testing.T) {
 }
 
 func TestPITRMergeTimelines(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name   string
 		tl     [][]Timeline
